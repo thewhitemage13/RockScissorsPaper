@@ -1,0 +1,14 @@
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\bin\Debug\net8.0\Client.exe
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\bin\Debug\net8.0\Client.deps.json
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\bin\Debug\net8.0\Client.runtimeconfig.json
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\bin\Debug\net8.0\Client.dll
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\bin\Debug\net8.0\Client.pdb
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.GeneratedMSBuildEditorConfig.editorconfig
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.AssemblyInfoInputs.cache
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.AssemblyInfo.cs
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.csproj.CoreCompileInputs.cache
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.dll
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\refint\Client.dll
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.pdb
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\Client.genruntimeconfig.cache
+D:\.Net\HTTP\Home Work\Rock-Scissors-Paper\Client\obj\Debug\net8.0\ref\Client.dll
