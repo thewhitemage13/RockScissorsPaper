@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -29,20 +29,36 @@ namespace Client
 
                 for (int i = 0; i < 5; i++)
                 {
-                    Console.WriteLine("\n Select: (1) Rock, (2) Scissors, (3) Paper");
+                    Console.WriteLine("\nSelect: (1) Rock, (2) Scissors, (3) Paper, (4) Offer Draw, (5) Surrender");
                     int choice;
                     do
                     {
-                        Console.Write("Your choice (1-3): ");
-                    } while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3);
+                        Console.Write("Your choice (1-5): ");
+                    } while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 5);
 
-                    string move = moves[choice - 1];
+                    string move;
+                    if (choice >= 1 && choice <= 3)
+                    {
+                        move = moves[choice - 1];
+                    }
+                    else if (choice == 4)
+                    {
+                        move = "Draw";
+                    }
+                    else
+                    {
+                        move = "Surrender";
+                    }
+
                     byte[] moveData = Encoding.UTF8.GetBytes(move);
                     udpClient.Send(moveData, moveData.Length, serverEndpoint);
 
                     byte[] resultData = udpClient.Receive(ref remoteEP);
                     string result = Encoding.UTF8.GetString(resultData);
                     Console.WriteLine(result);
+
+                    if (result.Contains("Game over"))
+                        break;
                 }
 
                 byte[] finalData = udpClient.Receive(ref remoteEP);
@@ -54,7 +70,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Customer error: {ex.Message}");
+                Console.WriteLine($"Client error: {ex.Message}");
             }
             finally
             {
@@ -63,5 +79,4 @@ namespace Client
             }
         }
     }
-
 }
