@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -22,6 +22,7 @@ namespace Rock_Scissors_Paper
         private static int player1Score = 0, player2Score = 0;
         private static int roundsPlayed = 0;
         private const int MaxRounds = 5;
+        private static bool gameEnded = false;
 
         static void Main()
         {
@@ -37,7 +38,7 @@ namespace Rock_Scissors_Paper
 
                 Console.WriteLine("Both players are connected! Let the game begin...");
 
-                while (roundsPlayed < MaxRounds)
+                while (roundsPlayed < MaxRounds && !gameEnded)
                 {
                     player1Choice = player2Choice = null;
                     while (player1Choice == null || player2Choice == null)
@@ -53,10 +54,13 @@ namespace Rock_Scissors_Paper
                     Thread.Sleep(1000);
                 }
 
-                string finalResult = player1Score > player2Score ? "Player 1 wins!" :
-                                     player2Score > player1Score ? "Player 2 wins!" : "Tie!";
+                if (!gameEnded)
+                {
+                    string finalResult = player1Score > player2Score ? "Player 1 wins!" :
+                                         player2Score > player1Score ? "Player 2 wins!" : "Tie!";
+                    SendToBothPlayers($"Game over! {finalResult}");
+                }
 
-                SendToBothPlayers($"Game over! {finalResult}");
                 Console.WriteLine("Game over. The server is shutting down...");
             }
             catch (Exception ex)
@@ -105,7 +109,7 @@ namespace Rock_Scissors_Paper
                 byte[] data = udpServer.Receive(ref remoteEP);
                 string move = Encoding.UTF8.GetString(data).Trim();
 
-                if (!rules.ContainsKey(move))
+                if (!rules.ContainsKey(move) && move != "Draw" && move != "Surrender")
                 {
                     Console.WriteLine($"Player sent an incorrect move: {move}");
                     return;
@@ -115,6 +119,8 @@ namespace Rock_Scissors_Paper
                     player1Choice = move;
                 else if (remoteEP.Equals(player2Endpoint))
                     player2Choice = move;
+
+                HandleSpecialMoves();
             }
             catch (Exception ex)
             {
@@ -122,10 +128,29 @@ namespace Rock_Scissors_Paper
             }
         }
 
+        private static void HandleSpecialMoves()
+        {
+            if (player1Choice == "Surrender")
+            {
+                gameEnded = true;
+                SendToBothPlayers("Game over! Player 2 wins by surrender.");
+            }
+            else if (player2Choice == "Surrender")
+            {
+                gameEnded = true;
+                SendToBothPlayers("Game over! Player 1 wins by surrender.");
+            }
+            else if (player1Choice == "Draw" && player2Choice == "Draw")
+            {
+                gameEnded = true;
+                SendToBothPlayers("Game over! Players agreed to a draw.");
+            }
+        }
+
         private static string DetermineWinner()
         {
-            if (player1Choice == player2Choice)
-                return "Tie!";
+            if (player1Choice == "Draw" || player2Choice == "Draw") return "Waiting for opponent's response...";
+            if (player1Choice == player2Choice) return "Tie!";
 
             if (rules.ContainsKey(player1Choice) && rules[player1Choice] == player2Choice)
             {
